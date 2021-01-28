@@ -206,7 +206,7 @@ MonoBehaviour:
   - serializedVersion: 2
     rgba: 4283498495
   - serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4294967295
   srcTex: {fileID: 0}
   destTex: {fileID: 0}
   srcImg: []
@@ -214,7 +214,7 @@ MonoBehaviour:
   allPNGs: []
   thisPicPNGs: []
   picNotP56: 1
-  foundViewNumbers: []
+  foundViewNumbers: 
 --- !u!114 &120189911
 MonoBehaviour:
   m_ObjectHideFlags: 0
