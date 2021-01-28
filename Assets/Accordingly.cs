@@ -59,9 +59,12 @@ public class Accordingly : MonoBehaviour
             
             if (picNotP56)
             {
-                
-                for (int n = 0; n < 16; n++)
-                {     
+                if (File.Exists(di.FullName + "/pic." + vstr.ToString("000") + ".png"))
+                {
+                    File.Copy(di.FullName + "/pic." + vstr.ToString("000") + ".png", Application.dataPath + "/../Output/" + "/pic." + vstr + ".png");
+                }
+                    for (int n = 0; n < 16; n++)
+                {    
                     if (File.Exists(di.FullName + "/pic." + vstr.ToString("000") + "." + n.ToString() + ".png"))
                     {
                         Debug.Log("FOUND : " + di.FullName + "/pic." + vstr.ToString("000") + "." + n.ToString() + ".png");
@@ -104,7 +107,10 @@ public class Accordingly : MonoBehaviour
             }
             else
             {
-                
+                if (File.Exists(di.FullName + "/" + vstr + ".p56.png"))
+                {
+                    File.Copy(di.FullName + "/" + vstr + ".p56.png", Application.dataPath + "/../Output/" + "/pic." + vstr + ".png");
+                }
                 for (int n = 0; n < 16; n++)
                 {
                     
