@@ -15,7 +15,7 @@ public class Accordingly : MonoBehaviour
     public string[] allPNGs;
     public string[] thisPicPNGs;
     public bool picNotP56 = true;
-    public List<string> foundViewNumbers = new List<string>();
+    public List<int> foundViewNumbers = new List<int>();
     // Start is called before the first frame update
     void Start()
     {
@@ -35,25 +35,25 @@ public class Accordingly : MonoBehaviour
             if (fi.Name.Split('.')[0] == "pic")
             {
                 picNotP56 = true;
-                int viewNum = int.Parse(fi.Name.Split('.')[0]);
-                if (!foundViewNumbers.Contains(viewNum.ToString()))
+                int viewNum = int.Parse(fi.Name.Split('.')[1]);
+                if (!foundViewNumbers.Contains(viewNum))
                 {
-                    foundViewNumbers.Add(viewNum.ToString());
+                    foundViewNumbers.Add(viewNum);
                 }
             }
             else
             {
                 picNotP56 = false;
                 int viewNum = int.Parse(fi.Name.Split('.')[0]);
-                if (!foundViewNumbers.Contains(viewNum.ToString()))
+                if (!foundViewNumbers.Contains(viewNum))
                 {
-                    foundViewNumbers.Add(viewNum.ToString());
+                    foundViewNumbers.Add(viewNum);
                 }
             }
             Debug.Log(fi.Name);
         }
 
-        foreach (string vstr in foundViewNumbers.ToArray())
+        foreach (int vstr in foundViewNumbers.ToArray())
         {
             srcTex = new Texture2D(32, 32);
             
@@ -62,10 +62,10 @@ public class Accordingly : MonoBehaviour
                 
                 for (int n = 0; n < 16; n++)
                 {     
-                    if (File.Exists(di.FullName + "/pic." + vstr + "." + n.ToString() + ".png"))
+                    if (File.Exists(di.FullName + "/pic." + vstr.ToString("000") + "." + n.ToString() + ".png"))
                     {
-                        Debug.Log("FOUND : " + di.FullName + "/pic." + vstr + "." + n.ToString() + ".png");
-                        srcTex.LoadImage(File.ReadAllBytes(di.FullName + "/pic." + vstr + "." + n.ToString() + ".png"));
+                        Debug.Log("FOUND : " + di.FullName + "/pic." + vstr.ToString("000") + "." + n.ToString() + ".png");
+                        srcTex.LoadImage(File.ReadAllBytes(di.FullName + "/pic." + vstr.ToString("000") + "." + n.ToString() + ".png"));
                         srcTex.Apply();
 
                         if (n == 0)
@@ -85,7 +85,7 @@ public class Accordingly : MonoBehaviour
                         {
                             for (int x = 0; x < srcTex.width; x++)
                             {
-                                if (srcImg[(y * srcTex.width) + x].r != 255 && srcImg[(y * srcTex.width) + x].g != 255 && srcImg[(y * srcTex.width) + x].b != 255 && srcImg[(y * srcTex.width) + x].a != 0)
+                                if (srcImg[(y * srcTex.width) + x].a != 0)
                                 {
                                     destImg[(y * srcTex.width) + x] = prioColors[n];
                                 }
@@ -93,6 +93,8 @@ public class Accordingly : MonoBehaviour
                         }
                     }
                 }
+                if (destTex == null)
+                    destTex = new Texture2D(srcTex.width, srcTex.height);
                 destTex.SetPixels32(destImg);
                 destTex.Apply();
                 byte[] bytes = destTex.EncodeToPNG();
@@ -128,7 +130,7 @@ public class Accordingly : MonoBehaviour
                         {
                             for (int x = 0; x < srcTex.width; x++)
                             {
-                                if (srcImg[(y * srcTex.width) + x].r != 255 && srcImg[(y * srcTex.width) + x].g != 255 && srcImg[(y * srcTex.width) + x].b != 255 && srcImg[(y * srcTex.width) + x].a != 0)
+                                if (srcImg[(y * srcTex.width) + x].a != 0)
                                 {
                                     destImg[(y * srcTex.width) + x] = prioColors[n];
                                 }
@@ -136,6 +138,7 @@ public class Accordingly : MonoBehaviour
                         }
                     }
                 }
+
                 destTex.SetPixels32(destImg);
                 destTex.Apply();
                 byte[] bytes = destTex.EncodeToPNG();
