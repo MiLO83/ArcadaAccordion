@@ -88,7 +88,14 @@ public class Accordingly : MonoBehaviour
                         {
                             for (int x = 0; x < srcTex.width; x++)
                             {
-                                if (srcImg[(y * srcTex.width) + x].a > 0)
+                                if (destImg[(y * srcTex.width) + x].r == prioColors[0].r && destImg[(y * srcTex.width) + x].g == prioColors[0].g && destImg[(y * srcTex.width) + x].b == prioColors[0].b)
+                                {
+                                    if (srcImg[(y * srcTex.width) + x].a > 0)
+                                    {
+                                        destImg[(y * srcTex.width) + x] = prioColors[n];
+                                    }
+                                }
+                                if (srcImg[(y * srcTex.width) + x].a > 250)
                                 {
                                     destImg[(y * srcTex.width) + x] = prioColors[n];
                                 }
@@ -136,7 +143,14 @@ public class Accordingly : MonoBehaviour
                         {
                             for (int x = 0; x < srcTex.width; x++)
                             {
-                                if (srcImg[(y * srcTex.width) + x].a > 0)
+                                if (destImg[(y * srcTex.width) + x].r == prioColors[0].r && destImg[(y * srcTex.width) + x].g == prioColors[0].g && destImg[(y * srcTex.width) + x].b == prioColors[0].b)
+                                {
+                                    if (srcImg[(y * srcTex.width) + x].a > 0)
+                                    {
+                                        destImg[(y * srcTex.width) + x] = prioColors[n];
+                                    }
+                                }
+                                if (srcImg[(y * srcTex.width) + x].a > 250)
                                 {
                                     destImg[(y * srcTex.width) + x] = prioColors[n];
                                 }
