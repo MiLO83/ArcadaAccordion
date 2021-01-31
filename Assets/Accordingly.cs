@@ -88,7 +88,7 @@ public class Accordingly : MonoBehaviour
                         {
                             for (int x = 0; x < srcTex.width; x++)
                             {
-                                if (srcImg[(y * srcTex.width) + x].a > 240)
+                                if (srcImg[(y * srcTex.width) + x].a > 0)
                                 {
                                     destImg[(y * srcTex.width) + x] = prioColors[n];
                                 }
@@ -136,7 +136,7 @@ public class Accordingly : MonoBehaviour
                         {
                             for (int x = 0; x < srcTex.width; x++)
                             {
-                                if (srcImg[(y * srcTex.width) + x].a > 240)
+                                if (srcImg[(y * srcTex.width) + x].a > 0)
                                 {
                                     destImg[(y * srcTex.width) + x] = prioColors[n];
                                 }
