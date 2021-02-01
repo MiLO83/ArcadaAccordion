@@ -19,6 +19,7 @@ public class Accordingly : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         StartCoroutine(ProcessBatch());
     }
 
@@ -61,7 +62,7 @@ public class Accordingly : MonoBehaviour
             {
                 if (File.Exists(di.FullName + "/pic." + vstr.ToString("000") + ".png"))
                 {
-                    File.Copy(di.FullName + "/pic." + vstr.ToString("000") + ".png", Application.dataPath + "/../Output/" + "/pic." + vstr + ".png");
+                    File.Copy(di.FullName + "/pic." + vstr.ToString("000") + ".png", Application.dataPath + "/../Output/" + "/pic." + vstr.ToString() + ".png", true);
                 }
                     for (int n = 0; n < 16; n++)
                 {    
@@ -83,22 +84,34 @@ public class Accordingly : MonoBehaviour
                                 }
                             }
                         }
-                        srcImg = srcTex.GetPixels32();
-                        for (int y = 0; y < srcTex.height; y++)
+                        if (srcTex.width == destTex.width && srcTex.height == destTex.height)
                         {
-                            for (int x = 0; x < srcTex.width; x++)
+                            bool layerIsCompletelyTransparent = true;
+                            srcImg = srcTex.GetPixels32();
+                            for (int y = 0; y < srcTex.height; y++)
                             {
-                                if (destImg[(y * srcTex.width) + x].r == prioColors[0].r && destImg[(y * srcTex.width) + x].g == prioColors[0].g && destImg[(y * srcTex.width) + x].b == prioColors[0].b)
+                                for (int x = 0; x < srcTex.width; x++)
                                 {
-                                    if (srcImg[(y * srcTex.width) + x].a > 0)
+                                    if (destImg[(y * srcTex.width) + x].r == prioColors[0].r && destImg[(y * srcTex.width) + x].g == prioColors[0].g && destImg[(y * srcTex.width) + x].b == prioColors[0].b)
+                                    {
+                                        if (srcImg[(y * srcTex.width) + x].a > 0)
+                                        {
+                                            destImg[(y * srcTex.width) + x] = prioColors[n];
+                                        }
+                                    }
+                                    if (srcImg[(y * srcTex.width) + x].a > 250)
                                     {
                                         destImg[(y * srcTex.width) + x] = prioColors[n];
                                     }
+                                    if (srcImg[(y * srcTex.width) + x].a != 0)
+                                    {
+                                        layerIsCompletelyTransparent = false;
+                                    }
                                 }
-                                if (srcImg[(y * srcTex.width) + x].a > 250)
-                                {
-                                    destImg[(y * srcTex.width) + x] = prioColors[n];
-                                }
+                            }
+                            if (layerIsCompletelyTransparent == true)
+                            {
+                                File.Delete(di.FullName + "/pic." + vstr.ToString("000") + "." + n.ToString() + ".png");
                             }
                         }
                     }
@@ -116,49 +129,62 @@ public class Accordingly : MonoBehaviour
             {
                 if (File.Exists(di.FullName + "/" + vstr + ".p56.png"))
                 {
-                    File.Copy(di.FullName + "/" + vstr + ".p56.png", Application.dataPath + "/../Output/" + "/pic." + vstr + ".png");
+                    File.Copy(di.FullName + "/" + vstr + ".p56.png", Application.dataPath + "/../Output/" + "/pic." + vstr.ToString() + ".png", true);
                 }
                 for (int n = 0; n < 16; n++)
                 {
-                    
+
                     if (File.Exists(di.FullName + "/" + vstr + ".p56." + n.ToString() + ".png"))
                     {
                         Debug.Log("FOUND : " + di.FullName + "/" + vstr + ".p56." + n.ToString() + ".png");
                         srcTex.LoadImage(File.ReadAllBytes(di.FullName + "/" + vstr + ".p56." + n.ToString() + ".png"));
                         srcTex.Apply();
-                        if (n == 0)
+                        
+                            if (n == 0)
+                            {
+                                destTex = new Texture2D(srcTex.width, srcTex.height);
+                                destImg = new Color32[srcTex.width * srcTex.height];
+                                for (int y = 0; y < srcTex.height; y++)
+                                {
+                                    for (int x = 0; x < srcTex.width; x++)
+                                    {
+                                        destImg[(y * srcTex.width) + x] = prioColors[0];
+                                    }
+                                }
+                            }
+                        if (srcTex.width == destTex.width && srcTex.height == destTex.height)
                         {
-                            destTex = new Texture2D(srcTex.width, srcTex.height);
-                            destImg = new Color32[srcTex.width * srcTex.height];
+                            bool layerIsCompletelyTransparent = true;
+                            srcImg = srcTex.GetPixels32();
                             for (int y = 0; y < srcTex.height; y++)
                             {
                                 for (int x = 0; x < srcTex.width; x++)
                                 {
-                                    destImg[(y * srcTex.width) + x] = prioColors[0];
-                                }
-                            }
-                        }
-                        srcImg = srcTex.GetPixels32();
-                        for (int y = 0; y < srcTex.height; y++)
-                        {
-                            for (int x = 0; x < srcTex.width; x++)
-                            {
-                                if (destImg[(y * srcTex.width) + x].r == prioColors[0].r && destImg[(y * srcTex.width) + x].g == prioColors[0].g && destImg[(y * srcTex.width) + x].b == prioColors[0].b)
-                                {
-                                    if (srcImg[(y * srcTex.width) + x].a > 0)
+                                    if (destImg[(y * srcTex.width) + x].r == prioColors[0].r && destImg[(y * srcTex.width) + x].g == prioColors[0].g && destImg[(y * srcTex.width) + x].b == prioColors[0].b)
+                                    {
+                                        if (srcImg[(y * srcTex.width) + x].a > 0)
+                                        {
+                                            destImg[(y * srcTex.width) + x] = prioColors[n];
+                                        }
+                                    }
+                                    if (srcImg[(y * srcTex.width) + x].a > 250)
                                     {
                                         destImg[(y * srcTex.width) + x] = prioColors[n];
                                     }
+                                    if (srcImg[(y * srcTex.width) + x].a != 0)
+                                    {
+                                        layerIsCompletelyTransparent = false;
+                                    }
                                 }
-                                if (srcImg[(y * srcTex.width) + x].a > 250)
-                                {
-                                    destImg[(y * srcTex.width) + x] = prioColors[n];
-                                }
+                            }
+                            if (layerIsCompletelyTransparent == true)
+                            {
+                                File.Delete(di.FullName + "/" + vstr + ".p56." + n.ToString() + ".png");
                             }
                         }
                     }
                 }
-
+                
                 destTex.SetPixels32(destImg);
                 destTex.Apply();
                 byte[] bytes = destTex.EncodeToPNG();
