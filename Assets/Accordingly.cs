@@ -27,7 +27,7 @@ public class Accordingly : MonoBehaviour
     {
         
         ri = gameObject.GetComponent<RawImage>();
-        ri.texture = destTex;
+        
         DirectoryInfo di = new DirectoryInfo(Application.dataPath + "/../Input/");
         Directory.CreateDirectory(Application.dataPath + "/../Output/");
         Debug.Log("Looking for Images in : " + di.FullName);
@@ -63,8 +63,13 @@ public class Accordingly : MonoBehaviour
                 if (File.Exists(di.FullName + "/pic." + vstr.ToString("000") + ".png"))
                 {
                     File.Copy(di.FullName + "/pic." + vstr.ToString("000") + ".png", Application.dataPath + "/../Output/" + "/pic." + vstr.ToString() + ".png", true);
+
+                    srcTex.LoadImage(File.ReadAllBytes(di.FullName + "/pic." + vstr.ToString("000") + ".png"));
+                    srcTex.Apply();
+                    destTex = new Texture2D(srcTex.width, srcTex.height);
+                    destImg = new Color32[srcTex.width * srcTex.height];
                 }
-                    for (int n = 0; n < 16; n++)
+                for (int n = 0; n < 16; n++)
                 {    
                     if (File.Exists(di.FullName + "/pic." + vstr.ToString("000") + "." + n.ToString() + ".png"))
                     {
@@ -99,7 +104,7 @@ public class Accordingly : MonoBehaviour
                                             destImg[(y * srcTex.width) + x] = prioColors[n];
                                         }
                                     }
-                                    if (srcImg[(y * srcTex.width) + x].a > 250)
+                                    if (srcImg[(y * srcTex.width) + x].a > 128)
                                     {
                                         destImg[(y * srcTex.width) + x] = prioColors[n];
                                     }
@@ -130,6 +135,10 @@ public class Accordingly : MonoBehaviour
                 if (File.Exists(di.FullName + "/" + vstr + ".p56.png"))
                 {
                     File.Copy(di.FullName + "/" + vstr + ".p56.png", Application.dataPath + "/../Output/" + "/pic." + vstr.ToString() + ".png", true);
+                    srcTex.LoadImage(File.ReadAllBytes(di.FullName + "/" + vstr + ".p56.png"));
+                    srcTex.Apply();
+                    destTex = new Texture2D(srcTex.width, srcTex.height);
+                    destImg = new Color32[srcTex.width * srcTex.height];
                 }
                 for (int n = 0; n < 16; n++)
                 {
@@ -167,7 +176,7 @@ public class Accordingly : MonoBehaviour
                                             destImg[(y * srcTex.width) + x] = prioColors[n];
                                         }
                                     }
-                                    if (srcImg[(y * srcTex.width) + x].a > 250)
+                                    if (srcImg[(y * srcTex.width) + x].a > 128)
                                     {
                                         destImg[(y * srcTex.width) + x] = prioColors[n];
                                     }
@@ -187,6 +196,7 @@ public class Accordingly : MonoBehaviour
                 
                 destTex.SetPixels32(destImg);
                 destTex.Apply();
+                ri.texture = destTex;
                 byte[] bytes = destTex.EncodeToPNG();
                 System.IO.File.WriteAllBytes(Application.dataPath + "/../Output/" + "/pic." + vstr + "_p.png", bytes);
                 Debug.Log("WROTE : " + Application.dataPath + "/../Output/" + "/pic." + vstr + "_p.png");
